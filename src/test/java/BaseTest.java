@@ -132,6 +132,11 @@ public class BaseTest {
         clickSubmit();
     }
 
+    /**
+     * Homework 24 - Create Browser Factory conditions for Selenium Grid Standalone
+     *
+     */
+
     public WebDriver pickBrowser(String browser) throws MalformedURLException {
         DesiredCapabilities caps = new DesiredCapabilities();
         String gridURL = "http://192.168.1.184:4444";

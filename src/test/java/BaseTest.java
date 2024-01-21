@@ -146,6 +146,14 @@ public class BaseTest {
                 edgeOptions.addArguments("--remote-allow-origins=*");
                 return driver = new EdgeDriver();
 
+            case "grid-edge": // gradle clean test -Dbrowser=grid-edge
+                caps.setCapability("browserName", "MicrosoftEdge");
+                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
+
+            case "grid-firefox": // gradle clean test -Dbrowser=grid-firefox
+                caps.setCapability("browserName", "firefox");
+                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
+
             case "grid-chrome:":
                 caps.setCapability("browserName", "chrome");
                 return driver = new RemoteWebDriver(URI.create(gridURL).toURL(),caps);

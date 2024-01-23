@@ -21,8 +21,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static io.github.bonigarcia.wdm.WebDriverManager.edgedriver;
 
@@ -42,6 +44,9 @@ public class BaseTest {
     }
 
     public WebDriver driver = null;
+
+    private static final ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();
+
     public WebDriverWait wait = null;
 
     public Wait<WebDriver> fluentWait = null;
@@ -58,8 +63,8 @@ public class BaseTest {
     @BeforeMethod
     public void launchBrowser(String BaseUrl) throws MalformedURLException {
 
-        driver = pickBrowser(System.getProperty("browser"));
-
+        //driver = pickBrowser(System.getProperty("browser"));
+        threadDriver.set(pickBrowser(System.getProperty("browser")));
 
         //ChromeOptions options = new ChromeOptions();
         //options.addArguments("--remote-allow-origins=*");
@@ -71,13 +76,13 @@ public class BaseTest {
         //driver = new FirefoxDriver();
 
         //implicit wait
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        //getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         //Explicit Wait
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         //Fluent Wait
-        fluentWait = new FluentWait<WebDriver>(driver)
+        fluentWait = new FluentWait<WebDriver>(getDriver())
                 .withTimeout(Duration.ofSeconds(10))
                 .pollingEvery(Duration.ofSeconds(5))
                 .ignoring(NoSuchElementException.class);
@@ -92,11 +97,20 @@ public class BaseTest {
 
     }
 
-    @AfterMethod
+    public static WebDriver getDriver(){
+        return threadDriver.get();
+    }
+
+    public void tearDown(){
+        threadDriver.get().close();
+        threadDriver.remove();
+    }
+
+    /*@AfterMethod
     public void closeBrowser() {
         driver.quit();
     }
-
+*/
     void provideEmail(String email) {
 
         WebElement emailField = wait.until((ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='email']"))));
@@ -159,9 +173,12 @@ public class BaseTest {
                 caps.setCapability("browserName", "firefox");
                 return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
 
-            case "grid-chrome:":
+            case "grid-chrome":
                 caps.setCapability("browserName", "chrome");
                 return driver = new RemoteWebDriver(URI.create(gridURL).toURL(),caps);
+
+            case "cloud":
+                return lambdaTest();
 
             default:
                 WebDriverManager.chromedriver().setup();
@@ -170,6 +187,35 @@ public class BaseTest {
                 //Manage Browser - wait for 10 seconds before failing/quitting.
                 return driver = new ChromeDriver(options);
         }
+
+
+    }
+    public WebDriver lambdaTest() throws MalformedURLException{
+
+        String hubURL = "https://hub.lambdatest.com/wd/hub";
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+
+
+        capabilities.setCapability("browserName", "chrome");
+        capabilities.setCapability("browserVersion", "120.0");
+
+        /*ChromeOptions browserOptions = new ChromeOptions();
+        browserOptions.setPlatformName("Windows 10");
+        browserOptions.setBrowserVersion("120.0");*/
+        HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+        ltOptions.put("username", "andrew.simmons");
+        ltOptions.put("accessKey", "TwtHi0j8VeDj0mJoHVofi8r23B3yRy1OhzNWA5SfcC2gCQssgD");
+        ltOptions.put("resolution", "1920x1080");
+        ltOptions.put("project", "Untitled");
+        ltOptions.put("selenium_version", "4.5.0");
+        ltOptions.put("driver_version", "120.0");
+        ltOptions.put("w3c", true);
+        ltOptions.put("plugin", "java-testNG");
+        capabilities.setCapability("LT:Options", ltOptions);
+
+        return new RemoteWebDriver(new URL(hubURL), capabilities);
+
     }
 }
 

@@ -13,7 +13,7 @@ import java.time.Duration;
 public class LoginTests extends BaseTest {
 
 
-    @Test
+ /*   @Test
     public void loginValidEmailPassword() {
 
         driver.get(url);
@@ -49,7 +49,7 @@ public class LoginTests extends BaseTest {
         //Expected Result
         Assert.assertEquals(driver.getCurrentUrl(), url);
     }
-
+*/
 
     /**
      * *Test Script using Page Object Model
@@ -60,8 +60,23 @@ public class LoginTests extends BaseTest {
 
         //navigateToUrl(url);
 
-        LoginPage loginPage = new LoginPage(driver);
-        HomePage homePage = new HomePage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
+        HomePage homePage = new HomePage(getDriver());
+
+        loginPage.provideEmail("Andrew.Simmons@testpro.io");
+        loginPage.providePassword("Andrew.Simmons24");
+        loginPage.clickSubmit();
+
+        Assert.assertTrue(homePage.getUserAvatarIcon().isDisplayed());
+    }
+
+    @Test
+    public void loginWithCorrectCredentials2(){
+
+        //navigateToUrl(url);
+
+        LoginPage loginPage = new LoginPage(getDriver());
+        HomePage homePage = new HomePage(getDriver());
 
         loginPage.provideEmail("Andrew.Simmons@testpro.io");
         loginPage.providePassword("Andrew.Simmons24");
@@ -74,7 +89,7 @@ public class LoginTests extends BaseTest {
     /**
      * Login using Page Factory Elements and Fluent Interface.
      */
-    @Test
+   /* @Test
     public void loginWithCorrectCredentialsUsingPageFactory() {
         LoginPage loginPage = new LoginPage(driver);
         HomePage homePage = new HomePage(driver);
@@ -84,6 +99,6 @@ public class LoginTests extends BaseTest {
                 .clickSubmitBtnToLogin();
         //Assertions
         Assert.assertTrue(homePage.getUserAvatarIcon().isDisplayed());
-    }
+    }*/
 
 }

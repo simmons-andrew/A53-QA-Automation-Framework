@@ -58,8 +58,6 @@ public class LoginTests extends BaseTest {
     @Test
     public void loginWithCorrectCredentials(){
 
-        //navigateToUrl(url);
-
         LoginPage loginPage = new LoginPage(getDriver());
         HomePage homePage = new HomePage(getDriver());
 

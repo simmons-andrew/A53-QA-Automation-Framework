@@ -76,7 +76,7 @@ public class BaseTest {
         //driver = new FirefoxDriver();
 
         //implicit wait
-        //getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         //Explicit Wait
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
@@ -87,8 +87,8 @@ public class BaseTest {
                 .pollingEvery(Duration.ofSeconds(5))
                 .ignoring(NoSuchElementException.class);
 
-        actions = new Actions(driver);
-        driver.manage().window().maximize();
+        actions = new Actions(getDriver());
+        //driver.manage().window().maximize();
 
         //url = BaseUrl;
 
@@ -101,6 +101,7 @@ public class BaseTest {
         return threadDriver.get();
     }
 
+    @AfterMethod
     public void tearDown(){
         threadDriver.get().close();
         threadDriver.remove();
@@ -136,7 +137,7 @@ public class BaseTest {
 
     //Helper Method
     public void navigateToUrl(String givenUrl) {
-        driver.get(givenUrl);
+        getDriver().get(givenUrl);
     }
 
     public void loginToKoelApp(){
@@ -200,12 +201,15 @@ public class BaseTest {
         capabilities.setCapability("browserName", "chrome");
         capabilities.setCapability("browserVersion", "120.0");
 
-        /*ChromeOptions browserOptions = new ChromeOptions();
+       /* ChromeOptions browserOptions = new ChromeOptions();
         browserOptions.setPlatformName("Windows 10");
         browserOptions.setBrowserVersion("120.0");*/
-        HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+        HashMap<String, Object> ltOptions;
+        ltOptions= new HashMap<String, Object>();
         ltOptions.put("username", "andrew.simmons");
         ltOptions.put("accessKey", "TwtHi0j8VeDj0mJoHVofi8r23B3yRy1OhzNWA5SfcC2gCQssgD");
+        ltOptions.put("visual", true);
+        ltOptions.put("video", true);
         ltOptions.put("resolution", "1920x1080");
         ltOptions.put("project", "Untitled");
         ltOptions.put("selenium_version", "4.5.0");

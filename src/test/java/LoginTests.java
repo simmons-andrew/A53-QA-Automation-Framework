@@ -71,7 +71,7 @@ public class LoginTests extends BaseTest {
     @Test
     public void loginWithCorrectCredentials2(){
 
-        //navigateToUrl(url);
+
 
         LoginPage loginPage = new LoginPage(getDriver());
         HomePage homePage = new HomePage(getDriver());
@@ -87,16 +87,28 @@ public class LoginTests extends BaseTest {
     /**
      * Login using Page Factory Elements and Fluent Interface.
      */
-   /* @Test
+    @Test
     public void loginWithCorrectCredentialsUsingPageFactory() {
-        LoginPage loginPage = new LoginPage(driver);
-        HomePage homePage = new HomePage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
+        HomePage homePage = new HomePage(getDriver());
         //Steps
         loginPage.provideEmailToLogin("demo@class.com")
                 .providePasswordToLogin("te$t$tudent")
                 .clickSubmitBtnToLogin();
         //Assertions
         Assert.assertTrue(homePage.getUserAvatarIcon().isDisplayed());
-    }*/
+    }
+
+    @Test
+    public void loginWithCorrectCredentialsUsingPageFactory2() {
+        LoginPage loginPage = new LoginPage(getDriver());
+        HomePage homePage = new HomePage(getDriver());
+        //Steps
+        loginPage.provideEmailToLogin("demo@class.com")
+                .providePasswordToLogin("te$t$tudent")
+                .clickSubmitBtnToLogin();
+        //Assertions
+        Assert.assertTrue(homePage.getUserAvatarIcon().isDisplayed());
+    }
 
 }

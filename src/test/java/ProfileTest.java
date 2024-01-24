@@ -10,18 +10,18 @@ public class ProfileTest extends BaseTest {
     @Test
     public void changeProfileName() throws InterruptedException {
 
-        driver.get(url);
+        getDriver().get(url);
         //Login
         //Email Field
-        WebElement emailField = driver.findElement(By.cssSelector("input[type='email']"));
+        WebElement emailField = getDriver().findElement(By.cssSelector("input[type='email']"));
         emailField.clear();
         emailField.sendKeys("demo@class.com");
         //Password Field
-        WebElement passwordField = driver.findElement(By.cssSelector("input[type='password']"));
+        WebElement passwordField = getDriver().findElement(By.cssSelector("input[type='password']"));
         passwordField.clear();
         passwordField.sendKeys("te$t$tudent");
         //Submit button
-        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        WebElement submitButton = getDriver().findElement(By.cssSelector("button[type='submit']"));
         submitButton.click();
 
         Thread.sleep(2000);
@@ -43,14 +43,14 @@ public class ProfileTest extends BaseTest {
         Thread.sleep(2000);
 
         //Assertion
-        WebElement actualProfileName = driver.findElement(By.cssSelector("a.view-profile>span"));
+        WebElement actualProfileName = getDriver().findElement(By.cssSelector("a.view-profile>span"));
         Assert.assertEquals(actualProfileName.getText(), randomNewName);
     }
 
     //Helper Methods
     //Navigate to Profile Page
     public void clickOnAvatar(){
-        WebElement avatarIcon = driver.findElement(By.cssSelector("img.avatar"));
+        WebElement avatarIcon = getDriver().findElement(By.cssSelector("img.avatar"));
         avatarIcon.click();
     }
 
@@ -59,19 +59,19 @@ public class ProfileTest extends BaseTest {
     }
 
     public void provideCurrentPassword(String password){
-        WebElement currentPasswordField = driver.findElement(By.cssSelector("[name='current_password']"));
+        WebElement currentPasswordField = getDriver().findElement(By.cssSelector("[name='current_password']"));
         currentPasswordField.clear();
         currentPasswordField.sendKeys(password);
     }
 
     public void provideNewName(String newName){
-        WebElement profileNameField = driver.findElement(By.cssSelector("[name='name']"));
+        WebElement profileNameField = getDriver().findElement(By.cssSelector("[name='name']"));
         profileNameField.clear();
         profileNameField.sendKeys(newName);
     }
 
     public void clickSave(){
-        WebElement saveButton = driver.findElement(By.cssSelector("button.btn-submit"));
+        WebElement saveButton = getDriver().findElement(By.cssSelector("button.btn-submit"));
         saveButton.click();
     }
 }

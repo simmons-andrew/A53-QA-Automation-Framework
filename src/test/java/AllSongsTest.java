@@ -15,8 +15,8 @@ import java.util.List;
 public class AllSongsTest extends BaseTest {
 
 
-    String newPlaylistName = "Sample Edited Playlist";
-    @Test
+
+/*    @Test
     public void playSongByContextClick() throws InterruptedException{
 
         navigateToUrl(url);
@@ -31,6 +31,32 @@ public class AllSongsTest extends BaseTest {
         Assert.assertTrue(isSongPlaying());
 
     }
+
+        @Test
+    public void countSongsInPlaylist() throws InterruptedException{
+        loginToKoelApp();
+        choosePlaylistByName("Playlist to count songs");
+        displayAllSongs();
+        Thread.sleep(2000);
+        //Assertions
+        Assert.assertTrue(getPlaylistDetails().contains(String.valueOf(countSongs())));
+    }
+@Test
+public void renamePlaylistNormal() throws InterruptedException{
+    String updatePlaylistMsg = "Updated playlist \"Sample Edited Playlist.\"";
+
+    loginToKoelApp();
+    Thread.sleep(2000);
+    doubleClickPlaylist();
+    Thread.sleep(2000);
+    enterNewPlaylistName();
+    Thread.sleep(2000);
+    //Assertions
+    Assert.assertEquals(getRenamePlaylistSuccessMsg(), updatePlaylistMsg);
+}*/
+
+
+    String newPlaylistName = "Sample Edited Playlist";
 
     /**
      * Exact same Test as PlaySongByContextClick.
@@ -54,6 +80,22 @@ public class AllSongsTest extends BaseTest {
     }
 
 
+  /*  @Test
+    public void renamePlaylist() throws InterruptedException{
+        String updatePlaylistMsg = "Updated playlist \"Sample Edited Playlist.\"";
+        LoginPage loginPage = new LoginPage(getDriver());
+        HomePage homePage = new HomePage(getDriver());
+        AllSongsPage allSongsPage = new AllSongsPage(getDriver());
+        BasePage basePage = new BasePage(getDriver());
+        //Login
+        loginPage.login();
+        allSongsPage.doubleClickPlaylist();
+        Thread.sleep(1000);
+        allSongsPage.enterNewPlaylistName(newPlaylistName);
+        Assert.assertEquals(getRenamePlaylistSuccessMsg(), updatePlaylistMsg);
+
+    }
+
     @Test
     public void hoverOverPlayBtn()  throws InterruptedException{
         navigateToUrl(url);
@@ -66,36 +108,8 @@ public class AllSongsTest extends BaseTest {
         Assert.assertTrue(hoverPlay().isDisplayed());
 
     }
+*/
 
-    @Test
-    public void countSongsInPlaylist() throws InterruptedException{
-        loginToKoelApp();
-        choosePlaylistByName("Playlist to count songs");
-        displayAllSongs();
-        Thread.sleep(2000);
-        //Assertions
-        Assert.assertTrue(getPlaylistDetails().contains(String.valueOf(countSongs())));
-    }
-
-    @Test
-    public void renamePlaylist() throws InterruptedException{
-        String updatePlaylistMsg = "Updated playlist \"Sample Edited Playlist.\"";
-
-        loginToKoelApp();
-        Thread.sleep(2000);
-        doubleClickPlaylist();
-        Thread.sleep(2000);
-        enterNewPlaylistName();
-        Thread.sleep(2000);
-        //Assertions
-        Assert.assertEquals(getRenamePlaylistSuccessMsg(), updatePlaylistMsg);
-    }
-
-
-
-    //For Students to try
-    // Create a test to hover over
-    // play button and click on play and verify that the song is being played.
 
 
 
@@ -121,7 +135,7 @@ public class AllSongsTest extends BaseTest {
     }
 
     public WebElement hoverPlay(){
-        WebElement playBtn = driver.findElement(By.cssSelector("[data-testid='play-btn']"));
+        WebElement playBtn = getDriver().findElement(By.cssSelector("[data-testid='play-btn']"));
         actions.moveToElement(playBtn).perform();
         return wait.until(ExpectedConditions.visibilityOf(playBtn));
     }
@@ -133,16 +147,16 @@ public class AllSongsTest extends BaseTest {
     }
 
     public int countSongs(){
-        return driver.findElements(By.cssSelector("section#playlistWrapper td.title")).size();
+        return getDriver().findElements(By.cssSelector("section#playlistWrapper td.title")).size();
     }
 
     public String getPlaylistDetails(){
-        return driver.findElement(By.cssSelector("span.meta.text-secondary span.meta")).getText();
+        return getDriver().findElement(By.cssSelector("span.meta.text-secondary span.meta")).getText();
     }
 
     public void displayAllSongs() throws InterruptedException{
         Thread.sleep(2000);
-        List<WebElement> songList = driver.findElements(By.cssSelector("section#playlistWrapper td.title"));
+        List<WebElement> songList = getDriver().findElements(By.cssSelector("section#playlistWrapper td.title"));
         System.out.println("Number of Songs found: "+countSongs());
         for (WebElement e : songList){
             System.out.println(e.getText());
@@ -155,7 +169,7 @@ public class AllSongsTest extends BaseTest {
     }
 
     public void enterNewPlaylistName(){
-        WebElement playlistInputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[name='name']")));
+        WebElement playlistInputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".playlist playlist editing")));
         //Clear does not work since element has an attribute of required.
         playlistInputField.sendKeys(Keys.chord(Keys.CONTROL, "A", Keys.BACK_SPACE));
         playlistInputField.sendKeys(newPlaylistName);

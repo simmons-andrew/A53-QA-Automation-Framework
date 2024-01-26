@@ -1,9 +1,11 @@
 package Pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 
 public class AllSongsPage extends BasePage{
 
@@ -15,7 +17,11 @@ public class AllSongsPage extends BasePage{
 
     By firstSongInAllSongs = By.cssSelector(".all-songs tr.song-item:nth-child(1)");
 
-    By playBtnInContextMeny = By.cssSelector("li.playback");
+    By playBtnInContextMenu = By.cssSelector("li.playback");
+
+    By playlistElementToClick = By.cssSelector(".playlist:nth-child(3)");
+
+    By playlistInputField = By.cssSelector(".playlist playlist editing");
 
     //Methods
 
@@ -31,8 +37,19 @@ public class AllSongsPage extends BasePage{
 
     public void choosePlayOption() throws InterruptedException{
         wait.until(ExpectedConditions
-                .visibilityOfElementLocated(playBtnInContextMeny)).click();
+                .visibilityOfElementLocated(playBtnInContextMenu)).click();
+    }
+
+    public void doubleClickPlaylist() throws InterruptedException{
+        WebElement playlistElement = wait.until(ExpectedConditions.visibilityOfElementLocated(playlistElementToClick));
+        actions.doubleClick(playlistElement).perform();
     }
 
 
+    public void enterNewPlaylistName(String newPlaylistName){
+      wait.until(ExpectedConditions.visibilityOfElementLocated(playlistInputField)).sendKeys(Keys.chord(Keys.CONTROL, "A", Keys.BACK_SPACE));
+        //Clear does not work since element has an attribute of required.
+      wait.until(ExpectedConditions.visibilityOfElementLocated(playlistInputField)).sendKeys(newPlaylistName);
+      wait.until(ExpectedConditions.visibilityOfElementLocated(playlistInputField)).sendKeys(Keys.ENTER);
+    }
 }

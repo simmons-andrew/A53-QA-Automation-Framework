@@ -18,3 +18,10 @@ Feature: Login feature
 #    |  email                       |  password          |
 #    |  andrew.simmons@testpro.io   |  Andrew.Simmons24  |
 #    |  andrew.simmons@testpro.io   |  andrew,Syms24     |
+
+  Scenario: Login Failure
+    Given I open Login Page
+    When I enter email "andrew.simmons@testpro.io"
+    And I enter blank password " "
+    And I click Submit
+    Then Login Fails

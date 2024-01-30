@@ -69,4 +69,16 @@ public class LoginStepDefinitions {
     public void iAmLoggedIn() {
         Assert.assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img.avatar"))).isDisplayed());
     }
+
+    @And("I enter blank password {string}")
+    public void iLeavePasswordBlank(String empty) {
+            //wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[type='password']"))).sendKeys(password);
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.provideEmptyPassword(empty);
+    }
+
+    @Then("Login Fails")
+    public void loginFails() {
+        Assert.assertEquals(driver.getCurrentUrl(), "https://qa.koel.app/");
+    }
 }

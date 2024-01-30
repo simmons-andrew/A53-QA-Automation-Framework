@@ -35,6 +35,12 @@ public class LoginPage extends BasePage{
         return this;
     }
 
+    public LoginPage provideEmptyPassword(String empty){
+        empty = "";
+        passwordTextField.sendKeys(empty);
+        return this;
+    }
+
     public LoginPage clickSubmitBtnToLogin(){
         loginButton.click();
         return this;
